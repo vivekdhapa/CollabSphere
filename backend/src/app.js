@@ -23,6 +23,7 @@ app.use(cors({
 //IMPORT THE ROUTES
 import healthCheckRouter from "./routes/healthcheck.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import projectRouter from "./routes/project.routes.js";
 
 
 
@@ -35,6 +36,9 @@ app.get("/",(req,res)=>{
 
 //registerUser
 app.use("/api/v1/auth",authRouter);
+//ProjectSection
+app.use("/api/v1/projects",projectRouter);
+
 
 
 
