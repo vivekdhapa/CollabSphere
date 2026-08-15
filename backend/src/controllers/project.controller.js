@@ -106,7 +106,7 @@ const getProjects = asyncHandler(async(req,res)=>{
                 ]
             }
         },{
-            $unwind:"project"
+            $unwind:"$projects"
         },
         {
             $project:{
@@ -147,7 +147,7 @@ const addMembersToProject = asyncHandler(async(req,res)=>{
     if(!user){
         throw new ApiError(404,"User does not exists")
     }
-    await ProjectMember.findByIdAndUpdate(
+    await ProjectMember.findOneAndUpdate(
         {
             user:new mongoose.Types.ObjectId(user._id),
             project:new mongoose.Types.ObjectId(projectId)
@@ -183,7 +183,7 @@ const getProjectMembers = asyncHandler(async(req,res)=>{
         },
         {
             $lookup:{
-                from:"user",
+                from:"users",
                 localField:"user",
                 foreignField:"_id",
                 as:"user",

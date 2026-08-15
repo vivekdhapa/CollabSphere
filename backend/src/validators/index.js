@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import { AvailableUserRole } from "../utils/constants.js";
+import { AvailableTaskStatus } from "../utils/constants.js";
 
 const userRegisterValidator = ()=>{
     return [ //extrated from express validator
@@ -85,9 +86,42 @@ const addMembertoProjectValidator=()=>{
     ];    
 }
 
+const createTaskValidator = () => {
+    return [
+        body("title").trim().notEmpty().withMessage("Title is required"),
+        body("description").optional().trim(),
+        body("assignedTo").optional().isMongoId().withMessage("Invalid assignee id"),
+        body("status").optional().isIn(AvailableTaskStatus).withMessage("Invalid status"),
+    ];
+};
 
+const updateTaskValidator = () => {
+    return [
+        body("title").optional().trim().notEmpty().withMessage("Title cannot be empty"),
+        body("description").optional().trim(),
+        body("assignedTo").optional().isMongoId().withMessage("Invalid assignee id"),
+        body("status").optional().isIn(AvailableTaskStatus).withMessage("Invalid status"),
+    ];
+};
 
+const createSubTaskValidator = () => {
+    return [body("title").trim().notEmpty().withMessage("Title is required")];
+};
 
+const updateSubTaskValidator = () => {
+    return [
+        body("title").optional().trim().notEmpty().withMessage("Title cannot be empty"),
+        body("isCompleted").optional().isBoolean().withMessage("isCompleted must be boolean"),
+    ];
+};
+
+const createNoteValidator = () => {
+    return [body("content").trim().notEmpty().withMessage("Content is required")];
+};
+
+const updateNoteValidator = () => {
+    return [body("content").trim().notEmpty().withMessage("Content is required")];
+};
 
 export{
     userRegisterValidator,
@@ -96,7 +130,11 @@ export{
     userForgotPasswordValidator,
     userResetForgotPasswordValidator,
     createProjectValidator,
-    addMembertoProjectValidator
-
-
+    addMembertoProjectValidator,
+    createTaskValidator,
+    updateTaskValidator,
+    createSubTaskValidator,
+    updateSubTaskValidator,
+    createNoteValidator,
+    updateNoteValidator
 }

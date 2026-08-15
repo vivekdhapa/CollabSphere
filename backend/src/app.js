@@ -24,8 +24,8 @@ app.use(cors({
 import healthCheckRouter from "./routes/healthcheck.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import projectRouter from "./routes/project.routes.js";
-
-
+import taskRouter from "./routes/task.routes.js"
+import noteRouter from "./routes/note.routes.js";
 
 
 
@@ -38,7 +38,10 @@ app.get("/",(req,res)=>{
 app.use("/api/v1/auth",authRouter);
 //ProjectSection
 app.use("/api/v1/projects",projectRouter);
-
+//task section
+app.use("/api/v1/tasks",taskRouter);
+//notes section
+app.use("/api/v1/notes",noteRouter);
 
 
 
