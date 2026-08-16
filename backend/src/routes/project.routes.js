@@ -12,7 +12,7 @@ import {
 } from "../controllers/project.controller.js";  
 import { validate } from "../middlewares/validator.middleware.js";
 
-import { createProjectValidator,addMembersToProject, addMembertoProjectValidator } from "../validators/index.js"; 
+import { createProjectValidator, addMembertoProjectValidator } from "../validators/index.js"; 
 
 import { verifyJWT,validateProjectPermission } from "../middlewares/auth.middleware.js";
 import { AvailableUserRole, UserRolesEnum } from "../utils/constants.js";

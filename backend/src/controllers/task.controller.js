@@ -11,7 +11,7 @@ import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
 import mongoose, { mongo } from "mongoose";
 import { AvailableUserRole, UserRolesEnum } from "../utils/constants.js";
-import { pipeline } from "nodemailer/lib/xoauth2/index.js";
+// import { pipeline } from "nodemailer/lib/xoauth2/index.js";
 
 const getTasks=asyncHandler(async(req,res)=>{
      const {projectId}=req.params;

@@ -28,7 +28,7 @@ const generateAccessAndRefreshTokens=async(userId)=>{
 const registerUser=asyncHandler(async(req,res)=>{
     //from frntd data comes from body assuming
     // destructring body's data
-    const {email,username,password,role}=req.body
+    const {email,username,password,role,fullName}=req.body
 
     const existedUser=await User.findOne({
         $or:[{username},{email}] //search on db
@@ -42,6 +42,7 @@ const registerUser=asyncHandler(async(req,res)=>{
         email,
         password,
         username,
+        fullName,
         isEmailVerified:false
     })
 
