@@ -1,19 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PageShell from "../../components/layout/PageShell";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import api from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 
 export default function SettingsPage() {
-  const { user, logout } = useAuth();
+  const { user, setUser, logout } = useAuth();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [resendMessage, setResendMessage] = useState({ type: "", text: "" });
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
+  const fileInputRef = useRef(null);
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setAvatarError("Please select an image file.");
+      return;
+    }
+
+    setAvatarError("");
+    setIsUploadingAvatar(true);
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    try {
+      const response = await api.patch("/auth/avatar", formData);
+      setUser(response.data.data);
+    } catch (err) {
+      setAvatarError(err.response?.data?.message || "Failed to upload avatar.");
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -60,7 +91,54 @@ export default function SettingsPage() {
             {/* Profile Section */}
             <section className="bg-surface-container-lowest p-6 rounded-xl border border-stone-200">
               <h2 className="headline-sm text-stone-900 mb-6">Profile Information</h2>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-6">
+                
+                {/* Avatar Section */}
+                <div className="flex flex-col sm:flex-row items-start gap-4 pb-4 border-b border-stone-100">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden bg-stone-200 border-2 border-stone-100 shrink-0 shadow-sm">
+                    {user?.avatar?.url ? (
+                      <img 
+                        src={user.avatar.url} 
+                        alt="Profile" 
+                        className={`w-full h-full object-cover transition-opacity duration-200 ${isUploadingAvatar ? 'opacity-50' : 'opacity-100'}`}
+                        crossOrigin="anonymous"
+                      />
+                    ) : (
+                      <div className={`w-full h-full flex items-center justify-center bg-primary text-white text-2xl font-medium transition-opacity duration-200 ${isUploadingAvatar ? 'opacity-50' : 'opacity-100'}`}>
+                        {user?.fullName?.charAt(0).toUpperCase() || user?.username?.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    {isUploadingAvatar && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="material-symbols-outlined animate-spin text-stone-700 text-2xl drop-shadow-md">progress_activity</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 pt-2">
+                    <p className="text-sm font-medium text-stone-900">Profile Photo</p>
+                    <p className="text-xs text-stone-500 mb-1">Recommended size: 256x256px. Max 1MB.</p>
+                    <div className="flex items-center gap-3">
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        ref={fileInputRef}
+                        onChange={handleAvatarChange}
+                      />
+                      <button 
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploadingAvatar}
+                        className="px-4 py-2 bg-white border border-stone-300 text-stone-700 rounded-lg text-sm font-medium hover:bg-stone-50 transition-colors disabled:opacity-50"
+                      >
+                        Change photo
+                      </button>
+                    </div>
+                    {avatarError && (
+                      <p className="text-xs text-error mt-1">{avatarError}</p>
+                    )}
+                  </div>
+                </div>
+
                 <div>
                   <label className="label-md text-stone-500 block mb-1">Username</label>
                   <input 

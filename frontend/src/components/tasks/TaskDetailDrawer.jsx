@@ -29,6 +29,8 @@ export default function TaskDetailDrawer({
   const [isAddingSubtask, setIsAddingSubtask] = useState(false);
   const [newSubtaskTitle, setNewSubtaskTitle] = useState("");
   const [isSubmittingSubtask, setIsSubmittingSubtask] = useState(false);
+  
+  const [isUploadingAttachment, setIsUploadingAttachment] = useState(false);
 
   const canEdit = userRole === "admin" || userRole === "project_admin";
 
@@ -182,6 +184,29 @@ export default function TaskDetailDrawer({
       alert("Failed to add subtask");
     } finally {
       setIsSubmittingSubtask(false);
+    }
+  };
+
+  const handleUploadAttachments = async (e) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    setIsUploadingAttachment(true);
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append("attachments", files[i]);
+    }
+
+    try {
+      const response = await api.put(`/tasks/${projectId}/t/${taskId}`, formData);
+      setTask(response.data.data);
+      if (onTaskUpdated) onTaskUpdated();
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Failed to upload attachments");
+    } finally {
+      setIsUploadingAttachment(false);
+      e.target.value = "";
     }
   };
 
@@ -514,9 +539,33 @@ export default function TaskDetailDrawer({
               </div>
 
               {/* Attachments */}
-              {task.attachments && task.attachments.length > 0 && (
-                <div>
-                  <h3 className="headline-sm text-stone-900 mb-4">Attachments</h3>
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="headline-sm text-stone-900 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[18px]">attachment</span>
+                    Attachments
+                  </h3>
+                  {canEdit && (
+                    <div>
+                      <input 
+                        type="file" 
+                        multiple 
+                        className="hidden" 
+                        id={`upload-attachment-${taskId}`}
+                        onChange={handleUploadAttachments}
+                        disabled={isUploadingAttachment}
+                      />
+                      <label 
+                        htmlFor={`upload-attachment-${taskId}`}
+                        className={`text-xs font-medium text-stone-500 hover:text-stone-900 flex items-center gap-1 cursor-pointer transition-colors ${isUploadingAttachment ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        <span className="material-symbols-outlined text-[16px]">{isUploadingAttachment ? 'hourglass_empty' : 'upload_file'}</span>
+                        {isUploadingAttachment ? 'Uploading...' : 'Add attachment'}
+                      </label>
+                    </div>
+                  )}
+                </div>
+                {task.attachments && task.attachments.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {task.attachments.map((file) => (
                       <div key={file._id} className="flex items-center gap-3 p-3 rounded-lg border border-stone-200 bg-stone-50 group hover:border-stone-300 transition-colors">
@@ -541,8 +590,10 @@ export default function TaskDetailDrawer({
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div className="text-sm italic text-stone-400 pl-2">No attachments found.</div>
+                )}
+              </div>
 
             </>
           ) : null}
