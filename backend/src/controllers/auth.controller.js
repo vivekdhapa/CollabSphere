@@ -364,8 +364,30 @@ const changeCurrentPassword=asyncHandler(async(req,res)=>{
 
 
 
-    // const getCurrentUser=asyncHandler(async(req,res)=>{})
-        
+const updateUserAvatar = asyncHandler(async(req,res)=>{
+    if(!req.file){
+        throw new ApiError(400,"Avatar image is required")
+    }
+
+    const user = await User.findById(req.user._id)
+    if(!user){
+        throw new ApiError(404,"User not found")
+    }
+
+    user.avatar = {
+        url: req.file.path,
+        localPath: ""
+    }
+    await user.save({validateBeforeSave:false})
+
+    const updatedUser = await User.findById(user._id).select(
+        "-password -emailVerificationToken -refreshToken -emailVerificationExpiry "
+    )
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200,updatedUser,"Avatar updated successfully"))
+})
         
         
         
@@ -379,5 +401,6 @@ const changeCurrentPassword=asyncHandler(async(req,res)=>{
                 refreshAccessToken,
                 forgotPasswordRequest,
                 resetForgotPassword,
-                changeCurrentPassword
+                changeCurrentPassword,
+                updateUserAvatar
              };

@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { changeCurrentPassword, forgotPasswordRequest, getCurrentUser, login, logoutUser, refreshAccessToken, registerUser, resendEmailVerification, resetForgotPassword, verifyEmail } from "../controllers/auth.controller.js";  
+import { changeCurrentPassword, forgotPasswordRequest, getCurrentUser, login, logoutUser, refreshAccessToken, registerUser, resendEmailVerification, resetForgotPassword, verifyEmail,updateUserAvatar } from "../controllers/auth.controller.js";  
 import { validate } from "../middlewares/validator.middleware.js";
 import { userRegisterValidator,userLoginValidator, userForgotPasswordValidator, userResetForgotPasswordValidator, userChangeCurrentPasswordValidator } from "../validators/index.js"; 
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
-
+import { uploadAvatar } from "../middlewares/multer.middleware.js";
 
 
 
@@ -34,6 +34,6 @@ router.route("/change-password").post(verifyJWT,userChangeCurrentPasswordValidat
 
 router.route("/resend-email-verification").post(verifyJWT,resendEmailVerification);
 
-
+router.route("/avatar").patch(verifyJWT,uploadAvatar.single("avatar"),updateUserAvatar);
 
 export default router;

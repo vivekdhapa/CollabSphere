@@ -119,7 +119,7 @@ const createTask = asyncHandler(async (req, res) => {
     const files = req.files || []
     const attachments = files.map((file) => {
         return {
-            url: `${process.env.SERVER_URL}/images/${file.filename}`,
+            url: file.path, // Cloudinary's secure URL, already absolute,
             mimetype: file.mimetype,
             size: file.size
         }
@@ -157,7 +157,7 @@ const updateTask = asyncHandler(async (req, res) => {
 
     const files = req.files || [];
     const newAttachments = files.map((file) => ({
-        url: `${process.env.SERVER_URL}/images/${file.filename}`,
+        url: file.path, // Cloudinary's secure URL, already absolute,
         mimetype: file.mimetype,
         size: file.size,
     }));
