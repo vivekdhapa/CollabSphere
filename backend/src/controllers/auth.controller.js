@@ -60,7 +60,7 @@ const registerUser=asyncHandler(async(req,res)=>{
             subject:"Please verify your email",
             mailgenContent:emailVerificationMailgenContent(
                 user.username,
-                `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}` //dynamic link
+                `${process.env.EMAIL_VERIFICATION_REDIRECT_URL}/${unHashedToken}` //dynamic link
             )
         }
     )
@@ -221,7 +221,7 @@ const resendEmailVerification=asyncHandler(async(req,res)=>{
             subject:"Please verify your email",
             mailgenContent:emailVerificationMailgenContent(
                 user.username,
-                `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}` //dynamic link
+                `${process.env.EMAIL_VERIFICATION_REDIRECT_URL}/${unHashedToken}` //dynamic link
             )
         }
     ) 

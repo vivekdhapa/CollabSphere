@@ -1,1 +1,11 @@
 .env
+design.md
+AGENTS.md
+CLAUDE.md
+RULES.md
+SKILL.md
+repomix-output-*.md
+notes.md
+node_modules
+PRD.md
+.env.local

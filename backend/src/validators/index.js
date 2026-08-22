@@ -2,7 +2,7 @@ import { body } from "express-validator";
 import { AvailableUserRole } from "../utils/constants.js";
 import { AvailableTaskStatus } from "../utils/constants.js";
 
-const userRegisterValidator = ()=>{
+const userRegisterValidator = () => {
     return [ //extrated from express validator
         body("email")
             .trim()
@@ -15,7 +15,7 @@ const userRegisterValidator = ()=>{
             .notEmpty()
             .isLowercase()
             .withMessage("Username must be in lowercase")
-            .isLength({min:3})
+            .isLength({ min: 3 })
             .withMessage("Username must be at least 3 characters long"),
         body("password")
             .trim()
@@ -27,15 +27,15 @@ const userRegisterValidator = ()=>{
     ];
 }
 
-const userLoginValidator = ()=>{
-    return[
+const userLoginValidator = () => {
+    return [
         body("email").optional().isEmail().withMessage("Email is invalid"),
         body("password").notEmpty().withMessage("Password is required")
     ]
 }
 
 
-const userChangeCurrentPasswordValidator=()=>{
+const userChangeCurrentPasswordValidator = () => {
     return [
         body("oldPassword").notEmpty().withMessage("Old password is required"),
         body("newPassword").notEmpty().withMessage("New password is required"),
@@ -43,8 +43,8 @@ const userChangeCurrentPasswordValidator=()=>{
 }
 
 
-const userForgotPasswordValidator=()=>{
-    return[
+const userForgotPasswordValidator = () => {
+    return [
         body("email")
             .notEmpty()
             .withMessage("Email is required")
@@ -53,15 +53,15 @@ const userForgotPasswordValidator=()=>{
     ]
 }
 
-const userResetForgotPasswordValidator=()=>{
-    return[
+const userResetForgotPasswordValidator = () => {
+    return [
         body("newPassword")
             .notEmpty()
             .withMessage("Password is required")
     ]
 }
 
-const createProjectValidator=()=>{
+const createProjectValidator = () => {
     return [
         body("name")
             .notEmpty()
@@ -70,7 +70,7 @@ const createProjectValidator=()=>{
     ];
 }
 
-const addMembertoProjectValidator=()=>{
+const addMembertoProjectValidator = () => {
     return [
         body("email")
             .trim()
@@ -83,7 +83,7 @@ const addMembertoProjectValidator=()=>{
             .withMessage("Role is required")
             .isIn(AvailableUserRole)
             .withMessage("Role is invalid")
-    ];    
+    ];
 }
 
 const createTaskValidator = () => {
@@ -92,6 +92,7 @@ const createTaskValidator = () => {
         body("description").optional().trim(),
         body("assignedTo").optional().isMongoId().withMessage("Invalid assignee id"),
         body("status").optional().isIn(AvailableTaskStatus).withMessage("Invalid status"),
+        body("dueDate").optional().isISO8601().withMessage("Invalid due date"),
     ];
 };
 
@@ -101,6 +102,7 @@ const updateTaskValidator = () => {
         body("description").optional().trim(),
         body("assignedTo").optional().isMongoId().withMessage("Invalid assignee id"),
         body("status").optional().isIn(AvailableTaskStatus).withMessage("Invalid status"),
+        body("dueDate").optional().isISO8601().withMessage("Invalid due date"),
     ];
 };
 
@@ -123,7 +125,7 @@ const updateNoteValidator = () => {
     return [body("content").trim().notEmpty().withMessage("Content is required")];
 };
 
-export{
+export {
     userRegisterValidator,
     userLoginValidator,
     userChangeCurrentPasswordValidator,
