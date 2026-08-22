@@ -15,11 +15,11 @@ const sendEmail=async(options)=>{
     const emailHtml=mailGenerator.generate(options.mailgenContent)
 
     const transporter=nodemailer.createTransport({
-        host:process.env.MAILTRAP_SMTP_HOST,
-        port:process.env.MAILTRAP_SMTP_PORT,
+        host:process.env.SMTP_HOST,
+        port:process.env.SMTP_PORT,
         auth:{
-            user:process.env.MAILTRAP_SMTP_USER,
-            pass:process.env.MAILTRAP_SMTP_PASS
+            user:process.env.SMTP_USER,
+            pass:process.env.SMTP_PASS
         }
     })
 
