@@ -1,28 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-stone-50">
       {/* Header */}
-      <header className="h-[64px] bg-stone-50 border-b border-stone-100 flex items-center justify-between px-margin-mobile md:px-margin-desktop">
+      <header className="h-[72px] bg-white/80 backdrop-blur-md border-b border-stone-100 flex items-center justify-between px-6 md:px-12 sticky top-0 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-stone-900 rounded-lg flex items-center justify-center">
-            <span className="material-symbols-outlined text-white text-[18px]">dashboard</span>
+          <div className="w-10 h-10 bg-stone-900 rounded-xl flex items-center justify-center shadow-sm">
+            <span className="material-symbols-outlined text-white text-[20px]">dashboard</span>
           </div>
-          <span className="headline-md">CollabSphere</span>
+          <span className="text-xl font-bold tracking-tight text-stone-900">CollabSphere</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link 
-            href="/login" 
-            className="px-4 py-2 bg-white border border-stone-200 text-stone-900 rounded-lg hover:bg-stone-50 hover:border-stone-300 transition-colors font-medium text-sm"
+          <Link
+            href="/login"
+            className="px-5 py-2.5 text-stone-600 hover:text-stone-900 font-medium text-sm transition-colors"
           >
             Sign In
           </Link>
-          <Link 
-            href="/register" 
-            className="px-4 py-2 bg-stone-900 text-white rounded-lg hover:bg-stone-800 transition-colors active:scale-[0.98] font-medium text-sm"
+          <Link
+            href="/register"
+            className="px-5 py-2.5 bg-stone-900 text-white rounded-lg hover:bg-stone-800 transition-colors active:scale-[0.98] font-medium text-sm shadow-sm"
           >
             Get Started
           </Link>
@@ -32,100 +33,127 @@ export default function LandingPage() {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-16 md:py-24 px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center max-w-container-max mx-auto">
-          <h1 className="headline-lg-mobile md:headline-lg text-stone-900 mb-6">
-            Project management, without the noise.
+        <section className="relative pt-24 pb-32 px-6 md:px-12 flex flex-col items-center text-center max-w-[1200px] mx-auto overflow-hidden">
+
+          {/* Background Decorative Elements */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full -z-10 pointer-events-none opacity-40 mix-blend-multiply">
+            <div className="absolute top-[20%] left-[20%] w-72 h-72 bg-blue-100 rounded-full blur-3xl"></div>
+            <div className="absolute top-[40%] right-[20%] w-80 h-80 bg-orange-50 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-sm font-medium text-stone-600 mb-8">
+            <span className="flex h-2 w-2 rounded-full bg-green-500"></span>
+            CollabSphere 1.0 is now live
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-extrabold text-stone-900 tracking-tight mb-6 max-w-4xl leading-[1.1]">
+            Project management, <span className="text-stone-500">without the noise.</span>
           </h1>
-          <p className="body-lg text-stone-600 max-w-[600px] mb-10">
-            A quiet workspace for your team to organize projects, track tasks, manage subtasks, and collaborate with role-based precision.
+
+          <p className="text-lg md:text-xl text-stone-600 max-w-2xl mb-12 leading-relaxed">
+            A minimalist workspace for your team to organize projects, track tasks, and collaborate with role-based precision. Get more done, beautifully.
           </p>
-          <div className="flex items-center gap-4 mb-16">
-            <Link 
-              href="/register" 
-              className="px-6 py-3 bg-stone-900 text-white rounded-lg hover:bg-stone-800 transition-colors active:scale-[0.98] font-medium text-base"
+
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-20 w-full sm:w-auto">
+            <Link
+              href="/register"
+              className="w-full sm:w-auto px-8 py-4 bg-stone-900 text-white rounded-xl hover:bg-stone-800 transition-all active:scale-[0.98] font-semibold text-base shadow-lg shadow-stone-900/20 flex items-center justify-center gap-2"
             >
-              Get Started
+              Start for free
+              <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
             </Link>
-            <Link 
-              href="/login" 
-              className="px-6 py-3 bg-white border border-stone-200 text-stone-900 rounded-lg hover:bg-stone-50 hover:border-stone-300 transition-colors font-medium text-base"
+            <Link
+              href="/login"
+              className="w-full sm:w-auto px-8 py-4 bg-white border-2 border-stone-200 text-stone-900 rounded-xl hover:bg-stone-50 hover:border-stone-300 transition-colors font-semibold text-base flex items-center justify-center"
             >
               Sign In
             </Link>
           </div>
 
-          {/* Kanban mockup placeholder */}
-          <div className="w-full max-w-4xl bg-surface-container-lowest rounded-xl shadow-ambient-card border border-stone-200 p-2 md:p-4 aspect-video flex flex-col mx-auto">
-            <div className="h-8 border-b border-stone-100 flex items-center px-4 gap-2 mb-4">
-              <div className="w-3 h-3 rounded-full bg-stone-200"></div>
-              <div className="w-3 h-3 rounded-full bg-stone-200"></div>
-              <div className="w-3 h-3 rounded-full bg-stone-200"></div>
-            </div>
-            <div className="flex-1 flex gap-gutter px-2 pb-2 overflow-hidden opacity-50">
-              <div className="flex-1 bg-stone-50 rounded border border-stone-100 flex flex-col gap-2 p-2">
-                <div className="h-4 bg-stone-200 rounded w-1/3 mb-2"></div>
-                <div className="h-16 bg-white rounded border border-stone-200 shadow-sm"></div>
-                <div className="h-16 bg-white rounded border border-stone-200 shadow-sm"></div>
-              </div>
-              <div className="flex-1 bg-stone-50 rounded border border-stone-100 flex flex-col gap-2 p-2">
-                <div className="h-4 bg-stone-200 rounded w-1/3 mb-2"></div>
-                <div className="h-16 bg-white rounded border border-stone-200 shadow-sm"></div>
-              </div>
-              <div className="flex-1 bg-stone-50 rounded border border-stone-100 flex flex-col gap-2 p-2 hidden sm:flex">
-                <div className="h-4 bg-stone-200 rounded w-1/3 mb-2"></div>
-                <div className="h-16 bg-white rounded border border-stone-200 shadow-sm"></div>
+          {/* Dashboard Preview Image */}
+          <div className="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-2xl shadow-stone-900/10 border border-stone-200 p-2 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
+            <div className="bg-stone-100 rounded-xl overflow-hidden aspect-[16/10] relative flex items-center justify-center">
+              {/* Fallback layout in case image isn't named exactly right */}
+              <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+
+              <img
+                src="/dashboard.png"
+                alt="CollabSphere Dashboard Preview"
+                className="w-full h-full object-cover rounded-lg z-10 relative shadow-sm"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              {/* Fallback message if image is missing */}
+              <div className="hidden absolute inset-0 flex-col items-center justify-center text-stone-400 z-20 bg-stone-100">
+                <span className="material-symbols-outlined text-4xl mb-2">image</span>
+                <p className="font-medium">Please rename your image to 'dashboard-preview.png' and place it in the frontend/public folder.</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Feature Grid */}
-        <section className="py-16 bg-white px-margin-mobile md:px-margin-desktop">
-          <div className="max-w-[1024px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-gutter">
-            {/* Feature 1 */}
-            <div className="bg-surface-container-lowest rounded-xl p-6 shadow-ambient-card border border-transparent hover:border-stone-300 transition-colors flex flex-col">
-              <div className="w-10 h-10 rounded-lg bg-stone-100 flex items-center justify-center mb-4 text-stone-900">
-                <span className="material-symbols-outlined">folder_open</span>
-              </div>
-              <h3 className="headline-sm text-stone-900 mb-2">Organize projects</h3>
-              <p className="body-md text-stone-600 flex-1">
-                Keep all your work neatly organized in projects with role-based team access.
-              </p>
+        <section className="py-24 bg-white px-6 md:px-12 border-t border-stone-100">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4">Everything you need to ship faster</h2>
+              <p className="text-lg text-stone-600 max-w-2xl mx-auto">CollabSphere provides a focused toolkit designed to keep teams aligned without the overwhelming complexity of traditional tools.</p>
             </div>
 
-            {/* Feature 2 */}
-            <div className="bg-surface-container-lowest rounded-xl p-6 shadow-ambient-card border border-transparent hover:border-stone-300 transition-colors flex flex-col">
-              <div className="w-10 h-10 rounded-lg bg-stone-100 flex items-center justify-center mb-4 text-stone-900">
-                <span className="material-symbols-outlined">checklist</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Feature 1 */}
+              <div className="bg-stone-50 rounded-2xl p-8 border border-stone-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="w-12 h-12 rounded-xl bg-white border border-stone-200 flex items-center justify-center mb-6 text-stone-900 shadow-sm">
+                  <span className="material-symbols-outlined">folder_open</span>
+                </div>
+                <h3 className="text-xl font-bold text-stone-900 mb-3">Organize projects</h3>
+                <p className="text-stone-600 leading-relaxed">
+                  Keep all your work neatly organized in dedicated projects with clean, distraction-free interfaces.
+                </p>
               </div>
-              <h3 className="headline-sm text-stone-900 mb-2">Track tasks & subtasks</h3>
-              <p className="body-md text-stone-600 flex-1">
-                Move work across Todo, In Progress, and Done boards with nested subtasks for granular tracking.
-              </p>
-            </div>
 
-            {/* Feature 3 */}
-            <div className="bg-surface-container-lowest rounded-xl p-6 shadow-ambient-card border border-transparent hover:border-stone-300 transition-colors flex flex-col">
-              <div className="w-10 h-10 rounded-lg bg-stone-100 flex items-center justify-center mb-4 text-stone-900">
-                <span className="material-symbols-outlined">admin_panel_settings</span>
+              {/* Feature 2 */}
+              <div className="bg-stone-50 rounded-2xl p-8 border border-stone-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="w-12 h-12 rounded-xl bg-white border border-stone-200 flex items-center justify-center mb-6 text-stone-900 shadow-sm">
+                  <span className="material-symbols-outlined">checklist</span>
+                </div>
+                <h3 className="text-xl font-bold text-stone-900 mb-3">Track tasks & subtasks</h3>
+                <p className="text-stone-600 leading-relaxed">
+                  Move work seamlessly across boards with nested subtasks for granular tracking and progress monitoring.
+                </p>
               </div>
-              <h3 className="headline-sm text-stone-900 mb-2">Role-based permissions</h3>
-              <p className="body-md text-stone-600 flex-1">
-                Control access effortlessly with a three-tier Admin, Project Admin, and Member permission system.
-              </p>
+
+              {/* Feature 3 */}
+              <div className="bg-stone-50 rounded-2xl p-8 border border-stone-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="w-12 h-12 rounded-xl bg-white border border-stone-200 flex items-center justify-center mb-6 text-stone-900 shadow-sm">
+                  <span className="material-symbols-outlined">admin_panel_settings</span>
+                </div>
+                <h3 className="text-xl font-bold text-stone-900 mb-3">Role-based access</h3>
+                <p className="text-stone-600 leading-relaxed">
+                  Control access effortlessly with a tiered permission system, ensuring the right people see the right things.
+                </p>
+              </div>
             </div>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="py-6 bg-stone-50 border-t border-stone-100 px-margin-mobile md:px-margin-desktop flex items-center justify-between">
-        <div className="label-md text-stone-500">
-          © CollabSphere {new Date().getFullYear()}
-        </div>
-        <div className="flex items-center gap-4 label-md text-stone-500">
-          <Link href="/login" className="hover:text-stone-900 transition-colors">Sign In</Link>
-          <Link href="/register" className="hover:text-stone-900 transition-colors">Get Started</Link>
+      <footer className="py-10 bg-stone-900 text-stone-400 px-6 md:px-12">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px]">dashboard</span>
+            <span className="font-semibold text-white">CollabSphere</span>
+          </div>
+          <div className="text-sm">
+            © {new Date().getFullYear()} CollabSphere. All rights reserved.
+          </div>
+          <div className="flex items-center gap-6 text-sm font-medium">
+            <Link href="/login" className="hover:text-white transition-colors">Sign In</Link>
+            <Link href="/register" className="hover:text-white transition-colors">Get Started</Link>
+          </div>
         </div>
       </footer>
     </div>
