@@ -1,7 +1,5 @@
 import Mailgen from "mailgen";
-import nodemailer from "nodemailer";
 
-//sending mails
 const sendEmail=async(options)=>{
     const mailGenerator=new Mailgen({
         theme:"default",
@@ -14,34 +12,34 @@ const sendEmail=async(options)=>{
     const emailTextual=mailGenerator.generatePlaintext(options.mailgenContent)
     const emailHtml=mailGenerator.generate(options.mailgenContent)
 
-    const transporter=nodemailer.createTransport({
-        host:process.env.SMTP_HOST,
-        port:process.env.SMTP_PORT,
-        secure: true,
-        auth:{
-            user:process.env.SMTP_USER,
-            pass:process.env.SMTP_PASS
-        }
-    })
-
-    const mail={
-        from:"vivekdhapa24@gmail.com",
-        to:options.email,
-        subject:options.subject,
-        text:emailTextual,
-        html:emailHtml
-    }
-
     try {
-        await transporter.sendMail(mail)
+        const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "api-key": process.env.BREVO_API_KEY,
+            },
+            body: JSON.stringify({
+                sender: { email: "vivekdhapa24@gmail.com", name: "CollabSphere" },
+                to: [{ email: options.email }],
+                subject: options.subject,
+                htmlContent: emailHtml,
+                textContent: emailTextual,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(`Brevo API returned ${response.status}: ${errorBody}`);
+        }
     } catch (error) {
-        console.error("Email service failed silently.Make sure that you have provided your mailtrap credentials in the .env file correctly ")
+        console.error("Email service failed silently. Check BREVO_API_KEY and sender verification.")
         console.error("Error:",error);
     }
 }
 
 
-//creating the email
 const emailVerificationMailgenContent=(username,verificationUrl)=>{
     return{
         body:{
